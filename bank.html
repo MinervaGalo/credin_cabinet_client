@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кабинет банка</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">А</span><span><strong>Альфа Банк</strong><small>для бизнеса</small></span></a>
+    <nav class="main-nav" aria-label="Главное меню">
+      <a class="nav-item " href="index.html"><span class="nav-icon">⌂</span>Обзор</a>
+      <a class="nav-item " href="applications.html"><span class="nav-icon">▤</span>Мои заявки</a>
+      <a class="nav-item " href="credits.html"><span class="nav-icon">⌕</span>Подобрать кредит</a>
+      <a class="nav-item " href="documents.html"><span class="nav-icon">▧</span>Документы</a>
+      <a class="nav-item " href="help.html"><span class="nav-icon">?</span>Помощь</a>
+      <div class="nav-separator"></div>
+      <a class="nav-item bank-link active" href="bank.html"><span class="nav-icon">▦</span>Кабинет банка <span class="demo-tag">демо</span></a>
+    </nav>
+    <div class="sidebar-bottom"><div class="support-icon">◉</div><div><small>Техническая поддержка</small><strong>8 800 100-77-33</strong><small>Пн–Пт 09:00–20:00</small></div></div>
+  </aside>
+  <main class="main-area">
+    <header class="topbar"><div class="mobile-brand"><span class="brand-mark">А</span><strong>Альфа Банк</strong></div><div class="welcome"><strong>Добрый день, Анна</strong><span>Кредитный кабинет для малого и среднего бизнеса</span></div><div class="top-actions"><span class="company-select">▤ <span>ООО «Север»</span>⌄</span><a class="icon-button" href="popups/notifications.html" target="_blank" aria-label="Уведомления">♧</a><a class="avatar" href="popups/profile.html" target="_blank" aria-label="Профиль">АА</a></div></header>
+    <div class="page-content">
+<div class="page-heading"><div><p class="eyebrow">ДЕМО-РЕЖИМ СОТРУДНИКА</p><h1>Рабочее место банка</h1><p>Проверка заявок и принятие решения</p></div><span class="status review">Синтетические данные</span></div>
+<div class="stats-grid"><div class="card stat-card"><span>Всего заявок</span><strong>3</strong><small>В демонстрационной базе</small></div><div class="card stat-card"><span>На проверке</span><strong>1</strong><small>Требуют внимания</small></div><div class="card stat-card"><span>Одобрено</span><strong>1</strong><small>Демонстрационные решения</small></div></div>
+<div class="card table-card"><div class="table-toolbar"><h2>Очередь заявок</h2><label><span class="muted">Фильтр </span><select class="filter-select" data-table-filter="bankTable"><option value="">Все статусы</option><option>На проверке</option><option>Нужны документы</option><option>Одобрена</option><option>Отказ</option></select></label></div><div class="table-wrap"><table id="bankTable"><thead><tr><th>Номер</th><th>Компания</th><th>ИНН</th><th>Сумма</th><th>Статус</th><th></th></tr></thead><tbody>
+<tr><td><strong>КР-2026-0148</strong></td><td>ООО «Север»</td><td>7812345678</td><td>3 000 000 ₽</td><td><span class="status review">На проверке</span></td><td><a class="table-action" href="bank-review.html">Рассмотреть →</a></td></tr>
+<tr><td><strong>КР-2026-0149</strong></td><td>ИП Иванов</td><td>781234567890</td><td>1 500 000 ₽</td><td><span class="status docs">Нужны документы</span></td><td><a class="table-action" href="bank-review.html">Рассмотреть →</a></td></tr>
+<tr><td><strong>КР-2026-0150</strong></td><td>ООО «Вектор»</td><td>7801122334</td><td>5 000 000 ₽</td><td><span class="status approved">Одобрена</span></td><td><a class="table-action" href="bank-review.html">Рассмотреть →</a></td></tr>
+</tbody></table></div></div><p class="form-hint">Данные статичны. Для сохранения решений и синхронизации между страницами нужен backend или JavaScript.</p>    </div>
+    <footer class="footer-note">Демонстрационный прототип. Условия кредитования и данные вымышлены.</footer>
+  </main>
+</div>
+<dialog class="modal-frame" id="popupDialog"><iframe title="Окно действия" src="about:blank"></iframe></dialog>
+<script src="app.js" defer></script>
+</body></html>
