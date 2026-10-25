@@ -1,33 +1,195 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Рассмотрение заявки</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рассмотрение заявки</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="app-shell">
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark">А</span><span><strong>Альфа Банк</strong><small>для бизнеса</small></span></a>
-    <nav class="main-nav" aria-label="Главное меню">
-      <a class="nav-item " href="index.html"><span class="nav-icon">⌂</span>Обзор</a>
-      <a class="nav-item " href="applications.html"><span class="nav-icon">▤</span>Мои заявки</a>
-      <a class="nav-item " href="credits.html"><span class="nav-icon">⌕</span>Подобрать кредит</a>
-      <a class="nav-item " href="documents.html"><span class="nav-icon">▧</span>Документы</a>
-      <a class="nav-item " href="help.html"><span class="nav-icon">?</span>Помощь</a>
-      <div class="nav-separator"></div>
-      <a class="nav-item bank-link active" href="bank.html"><span class="nav-icon">▦</span>Кабинет банка <span class="demo-tag">демо</span></a>
-    </nav>
-    <div class="sidebar-bottom"><div class="support-icon">◉</div><div><small>Техническая поддержка</small><strong>8 800 100-77-33</strong><small>Пн–Пт 09:00–20:00</small></div></div>
-  </aside>
-  <main class="main-area">
-    <header class="topbar"><div class="mobile-brand"><span class="brand-mark">А</span><strong>Альфа Банк</strong></div><div class="welcome"><strong>Добрый день, Анна</strong><span>Кредитный кабинет для малого и среднего бизнеса</span></div><div class="top-actions"><span class="company-select">▤ <span>ООО «Север»</span>⌄</span><a class="icon-button" href="popups/notifications.html" target="_blank" aria-label="Уведомления">♧</a><a class="avatar" href="popups/profile.html" target="_blank" aria-label="Профиль">АА</a></div></header>
-    <div class="page-content">
-<div class="page-heading"><div><a class="button-link" href="bank.html">← Назад к очереди заявок</a><h1>Рассмотрение заявки</h1><p>КР-2026-0148 · ООО «Север»</p></div><span class="status review">На проверке</span></div><div class="detail-layout"><section class="card detail-panel"><h2>Данные для проверки</h2><div class="info-grid"><div class="info-item"><small>Компания</small><strong>ООО «Север»</strong></div><div class="info-item"><small>ИНН</small><strong>7812345678</strong></div><div class="info-item"><small>Сумма</small><strong>3 000 000 ₽</strong></div><div class="info-item"><small>Срок</small><strong>24 месяца</strong></div><div class="info-item"><small>Продукт</small><strong>Оборотный</strong></div><div class="info-item"><small>Демо-скоринг</small><strong>72/100</strong></div></div><div class="section-heading"><h2>Документы</h2></div><div class="document-row"><span>▤</span><div><strong>Бухгалтерская отчётность.pdf</strong><small>Тестовый документ</small></div></div><div class="document-row"><span>▤</span><div><strong>Выписка по счёту.pdf</strong><small>Тестовый документ</small></div></div><p class="form-hint">Скоринг и данные условные, не использовать для настоящих кредитных решений.</p></section><aside class="card detail-panel"><h2>Решение по заявке</h2><p class="muted" style="font-size:12px;line-height:1.7">В статической версии кнопки ниже показывают пример возможных решений. Для сохранения решения между страницами потребуется backend или JavaScript.</p><div class="decision-actions"><a class="button button-primary" href="popups/decision-approved.html" data-popup>Одобрить</a><a class="button button-secondary" href="popups/decision-documents.html" data-popup>Запросить документы</a><a class="button button-secondary" href="popups/decision-rejected.html" data-popup>Отказать</a></div></aside></div>    </div>
-    <footer class="footer-note">Демонстрационный прототип. Условия кредитования и данные вымышлены.</footer>
-  </main>
-</div>
-<dialog class="modal-frame" id="popupDialog"><iframe title="Окно действия" src="about:blank"></iframe></dialog>
-<script src="app.js" defer></script>
-</body></html>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="index.html">
+                <span class="brand-mark">А</span>
+                <span>
+                    <strong>Альфа Банк</strong>
+                    <small>для бизнеса</small>
+                </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Главное меню">
+                <a class="nav-item " href="index.html">
+                    <span class="nav-icon">⌂</span>
+                    Обзор
+                </a>
+                <a class="nav-item " href="applications.html">
+                    <span class="nav-icon">▤</span>
+                    Мои заявки
+                </a>
+                <a class="nav-item " href="credits.html">
+                    <span class="nav-icon">⌕</span>
+                    Подобрать кредит
+                </a>
+                <a class="nav-item " href="documents.html">
+                    <span class="nav-icon">▧</span>
+                    Документы
+                </a>
+                <a class="nav-item " href="help.html">
+                    <span class="nav-icon">?</span>
+                    Помощь
+                </a>
+                <div class="nav-separator"></div>
+                <a class="nav-item bank-link active" href="bank.html">
+                    <span class="nav-icon">▦</span>
+                    Кабинет банка
+                    <span class="demo-tag">демо</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="support-icon">◉</div>
+                <div>
+                    <small>Техническая поддержка</small>
+                    <strong>8 800 100-77-33</strong>
+                    <small>Пн–Пт 09:00–20:00</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-area">
+            <header class="topbar">
+                <div class="mobile-brand">
+                    <span class="brand-mark">А</span>
+                    <strong>Альфа Банк</strong>
+                </div>
+                <div class="welcome">
+                    <strong>Добрый день, Анна</strong>
+                    <span>Кредитный кабинет для малого и среднего бизнеса</span>
+                </div>
+                <div class="top-actions">
+                    <span class="company-select">
+                        ▤
+                        <span>ООО «Север»</span>
+                        ⌄
+                    </span>
+                    <a
+                        class="icon-button"
+                        href="popups/notifications.html"
+                        target="_blank"
+                        aria-label="Уведомления"
+                    >♧</a>
+                    <a
+                        class="avatar"
+                        href="popups/profile.html"
+                        target="_blank"
+                        aria-label="Профиль"
+                    >АА</a>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="page-heading">
+                    <div>
+                        <a class="button-link" href="bank.html">
+                            ← Назад к очереди заявок
+                        </a>
+                        <h1>Рассмотрение заявки</h1>
+                        <p>КР-2026-0148 · ООО «Север»</p>
+                    </div>
+
+                    <span class="status review">На проверке</span>
+                </div>
+
+                <div class="detail-layout">
+                    <section class="card detail-panel">
+                        <h2>Данные для проверки</h2>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <small>Компания</small>
+                                <strong>ООО «Север»</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>ИНН</small>
+                                <strong>7812345678</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Сумма</small>
+                                <strong>3 000 000 ₽</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Срок</small>
+                                <strong>24 месяца</strong>
+                            </div>
+                            <div class="info-item">
+                                <small>Продукт</small>
+                                <strong>Оборотный</strong>
+                            </div>
+
+                            <div class="info-item">
+                                <small>Демо-скоринг</small>
+                                <strong>72/100</strong>
+                            </div>
+                        </div>
+                        <div class="section-heading">
+                            <h2>Документы</h2>
+                        </div>
+                        <div class="document-row">
+                            <span>▤</span>
+                            <div>
+                                <strong>Бухгалтерская отчётность.pdf</strong>
+                                <small>Тестовый документ</small>
+                            </div>
+                        </div>
+                        <div class="document-row">
+                            <span>▤</span>
+                            <div>
+                                <strong>Выписка по счёту.pdf</strong>
+                                <small>Тестовый документ</small>
+                            </div>
+                        </div>
+                        <p class="form-hint">
+                            Скоринг и данные условные, не использовать для настоящих кредитных решений.
+                        </p>
+                    </section>
+
+                    <aside class="card detail-panel">
+                        <h2>Решение по заявке</h2>
+                        <p class="muted decision-description">
+                            В статической версии кнопки ниже показывают пример возможных решений.
+                            Для сохранения решения между страницами потребуется backend или JavaScript.
+                        </p>
+                        <div class="decision-actions">
+                            <a
+                                class="button button-primary"
+                                href="popups/decision-approved.html"
+                                data-popup
+                            >Одобрить</a>
+                            <a
+                                class="button button-secondary"
+                                href="popups/decision-documents.html"
+                                data-popup
+                            >Запросить документы</a>
+                            <a
+                                class="button button-secondary"
+                                href="popups/decision-rejected.html"
+                                data-popup
+                            >Отказать</a>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <footer class="footer-note">
+                Демонстрационный прототип. Условия кредитования и данные вымышлены.
+            </footer>
+        </main>
+    </div>
+
+    <dialog class="modal-frame" id="popupDialog">
+        <iframe title="Окно действия" src="about:blank"></iframe>
+    </dialog>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

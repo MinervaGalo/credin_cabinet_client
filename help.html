@@ -1,36 +1,139 @@
+
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Помощь</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощь</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="app-shell">
-  <aside class="sidebar">
-    <a class="brand" href="index.html"><span class="brand-mark">А</span><span><strong>Альфа Банк</strong><small>для бизнеса</small></span></a>
-    <nav class="main-nav" aria-label="Главное меню">
-      <a class="nav-item " href="index.html"><span class="nav-icon">⌂</span>Обзор</a>
-      <a class="nav-item " href="applications.html"><span class="nav-icon">▤</span>Мои заявки</a>
-      <a class="nav-item " href="credits.html"><span class="nav-icon">⌕</span>Подобрать кредит</a>
-      <a class="nav-item " href="documents.html"><span class="nav-icon">▧</span>Документы</a>
-      <a class="nav-item active" href="help.html"><span class="nav-icon">?</span>Помощь</a>
-      <div class="nav-separator"></div>
-      <a class="nav-item bank-link " href="bank.html"><span class="nav-icon">▦</span>Кабинет банка <span class="demo-tag">демо</span></a>
-    </nav>
-    <div class="sidebar-bottom"><div class="support-icon">◉</div><div><small>Техническая поддержка</small><strong>8 800 100-77-33</strong><small>Пн–Пт 09:00–20:00</small></div></div>
-  </aside>
-  <main class="main-area">
-    <header class="topbar"><div class="mobile-brand"><span class="brand-mark">А</span><strong>Альфа Банк</strong></div><div class="welcome"><strong>Добрый день, Анна</strong><span>Кредитный кабинет для малого и среднего бизнеса</span></div><div class="top-actions"><span class="company-select">▤ <span>ООО «Север»</span>⌄</span><a class="icon-button" href="popups/notifications.html" target="_blank" aria-label="Уведомления">♧</a><a class="avatar" href="popups/profile.html" target="_blank" aria-label="Профиль">АА</a></div></header>
-    <div class="page-content">
-<div class="page-heading"><div><h1>Помощь</h1><p>Ответы на вопросы о работе демонстрационного кабинета</p></div></div><div class="help-grid">
-<article class="card help-card"><h3>Как оформить заявку?</h3><p>Откройте «Подобрать кредит», выберите предложение и заполните форму. После отправки заявка появится в разделе «Мои заявки».</p></article>
-<article class="card help-card"><h3>Где посмотреть статус?</h3><p>Статус и этапы рассмотрения доступны на главной странице и в подробностях каждой заявки.</p></article>
-<article class="card help-card"><h3>Как проверить решение банка?</h3><p>Откройте «Кабинет банка» в левом меню. Это демонстрационный режим для проверки сквозного сценария.</p></article></div>    </div>
-    <footer class="footer-note">Демонстрационный прототип. Условия кредитования и данные вымышлены.</footer>
-  </main>
-</div>
-<dialog class="modal-frame" id="popupDialog"><iframe title="Окно действия" src="about:blank"></iframe></dialog>
-<script src="app.js" defer></script>
-</body></html>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <a class="brand" href="index.html">
+                <span class="brand-mark">А</span>
+                <span>
+                    <strong>Альфа Банк</strong>
+                    <small>для бизнеса</small>
+                </span>
+            </a>
+
+            <nav class="main-nav" aria-label="Главное меню">
+                <a class="nav-item " href="index.html">
+                    <span class="nav-icon">⌂</span>
+                    Обзор
+                </a>
+                <a class="nav-item " href="applications.html">
+                    <span class="nav-icon">▤</span>
+                    Мои заявки
+                </a>
+                <a class="nav-item " href="credits.html">
+                    <span class="nav-icon">⌕</span>
+                    Подобрать кредит
+                </a>
+                <a class="nav-item " href="documents.html">
+                    <span class="nav-icon">▧</span>
+                    Документы
+                </a>
+                <a class="nav-item active" href="help.html">
+                    <span class="nav-icon">?</span>
+                    Помощь
+                </a>
+                <div class="nav-separator"></div>
+                <a class="nav-item bank-link " href="bank.html">
+                    <span class="nav-icon">▦</span>
+                    Кабинет банка
+                    <span class="demo-tag">демо</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <div class="support-icon">◉</div>
+                <div>
+                    <small>Техническая поддержка</small>
+                    <strong>8 800 100-77-33</strong>
+                    <small>Пн–Пт 09:00–20:00</small>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-area">
+            <header class="topbar">
+                <div class="mobile-brand">
+                    <span class="brand-mark">А</span>
+                    <strong>Альфа Банк</strong>
+                </div>
+                <div class="welcome">
+                    <strong>Добрый день, Анна</strong>
+                    <span>Кредитный кабинет для малого и среднего бизнеса</span>
+                </div>
+
+                <div class="top-actions">
+                    <span class="company-select">
+                        ▤
+                        <span>ООО «Север»</span>
+                        ⌄
+                    </span>
+                    <a
+                        class="icon-button"
+                        href="popups/notifications.html"
+                        target="_blank"
+                        aria-label="Уведомления"
+                    >♧</a>
+                    <a
+                        class="avatar"
+                        href="popups/profile.html"
+                        target="_blank"
+                        aria-label="Профиль"
+                    >АА</a>
+                </div>
+            </header>
+
+            <div class="page-content">
+                <div class="page-heading">
+                    <div>
+                        <h1>Помощь</h1>
+                        <p>Ответы на вопросы о работе демонстрационного кабинета</p>
+                    </div>
+                </div>
+
+                <div class="help-grid">
+                    <article class="card help-card">
+                        <h3>Как оформить заявку?</h3>
+                        <p>
+                            Откройте «Подобрать кредит», выберите предложение и заполните форму.
+                            После отправки заявка появится в разделе «Мои заявки».
+                        </p>
+                    </article>
+
+                    <article class="card help-card">
+                        <h3>Где посмотреть статус?</h3>
+                        <p>
+                            Статус и этапы рассмотрения доступны на главной странице
+                            и в подробностях каждой заявки.
+                        </p>
+                    </article>
+
+                    <article class="card help-card">
+                        <h3>Как проверить решение банка?</h3>
+                        <p>
+                            Откройте «Кабинет банка» в левом меню.
+                            Это демонстрационный режим для проверки сквозного сценария.
+                        </p>
+                    </article>
+                </div>
+            </div>
+
+            <footer class="footer-note">
+                Демонстрационный прототип. Условия кредитования и данные вымышлены.
+            </footer>
+        </main>
+    </div>
+
+    <dialog class="modal-frame" id="popupDialog">
+        <iframe title="Окно действия" src="about:blank"></iframe>
+    </dialog>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

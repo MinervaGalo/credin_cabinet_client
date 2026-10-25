@@ -1,1 +1,51 @@
-<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Decision Documents</title><link rel="stylesheet" href="../styles.css"></head><body class="popup-body"><div class="popup-header"><div><p class="eyebrow">РЕШЕНИЕ БАНКА</p><h1>Запросить документы</h1><p>Укажите комментарий для предпринимателя.</p></div><a class="popup-close" href="../bank-review.html">Закрыть</a></div><form action="../bank-review.html"><label class="field-label" for="comment">Комментарий</label><textarea class="form-control" id="comment" rows="4" style="width:100%" placeholder="Например, приложите актуальную бухгалтерскую отчётность"></textarea><div class="form-actions"><a class="button button-secondary" href="../bank-review.html">Отмена</a><button class="button button-primary" type="submit">Подтвердить запрос</button></div><p class="form-hint">Без backend комментарий не сохраняется.</p></form><script src="popup.js" defer></script></body></html>
+
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Decision Documents</title>
+        <link rel="stylesheet" href="../styles.css">
+    </head>
+
+    <body class="popup-body">
+        <div class="popup-header">
+            <div>
+                <p class="eyebrow">РЕШЕНИЕ БАНКА</p>
+                <h1>Запросить документы</h1>
+                <p>Укажите комментарий для предпринимателя.</p>
+            </div>
+
+            <a class="popup-close" href="../bank-review.html">
+                Закрыть
+            </a>
+        </div>
+
+        <form action="../bank-review.html">
+            <label class="field-label" for="comment">
+                Комментарий
+            </label>
+            <textarea
+                class="form-control"
+                id="comment"
+                name="comment"
+                rows="4"
+                placeholder="Например, приложите актуальную бухгалтерскую отчётность"
+            ></textarea>
+
+            <div class="form-actions">
+                <a class="button button-secondary" href="../bank-review.html">
+                    Отмена
+                </a>
+                <button class="button button-primary" type="submit">
+                    Подтвердить запрос
+                </button>
+            </div>
+            <p class="form-hint">
+                Без backend комментарий не сохраняется.
+            </p>
+        </form>
+
+        <script src="popup.js" defer></script>
+    </body>
+</html>
