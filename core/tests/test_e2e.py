@@ -233,3 +233,120 @@ def test_ai_assistant(client, anna):
 def test_company_lookup(client, anna):
     assert client.get("/api/companies/lookup/7801122334", headers=anna).json()["name"] == "ООО «Вектор»"
     assert client.get("/api/companies/lookup/0000000000", headers=anna).status_code == 404
+
+
+def test_registration_and_login(client):
+    body = {"email": "New.Owner@Example.com", "password": "strong-pass-1", "full_name": "Ирина Новикова"}
+    registered = client.post("/api/auth/register", json=body)
+    assert registered.status_code == 201 and registered.json()["role"] == "client"
+
+    headers = {"Authorization": f"Bearer {registered.json()['token']}"}
+    assert client.get("/api/me", headers=headers).json()["email"] == "new.owner@example.com"
+    login = client.post("/api/auth/login", json={"email": "new.owner@example.com", "password": "strong-pass-1"})
+    assert login.status_code == 200
+
+    again = client.post("/api/auth/register", json=body)
+    assert again.status_code == 409 and again.json()["error"]["code"] == "email_taken"
+
+
+def test_registration_validation_messages(client):
+    response = client.post("/api/auth/register", json={"email": "no-at-sign", "password": "short", "full_name": "И"})
+    assert response.status_code == 422
+    messages = " ".join(f["message"] for f in response.json()["error"]["fields"])
+    assert "name@example.com" in messages and "слишком коротко" in messages
+
+
+def test_forged_and_expired_tokens_are_rejected(client):
+    from datetime import datetime, timedelta, timezone
+
+    from jose import jwt
+
+    from app import config
+
+    expired = jwt.encode(
+        {"sub": "1", "role": "client", "exp": datetime.now(timezone.utc) - timedelta(hours=1)},
+        config.SECRET_KEY,
+        "HS256",
+    )
+    forged = jwt.encode({"sub": "1", "role": "analyst", "exp": 9999999999}, "wrong-key", "HS256")
+    for token in (expired, forged, "not-a-token"):
+        response = client.get("/api/bank/stats", headers={"Authorization": f"Bearer {token}"})
+        assert response.status_code == 401
+
+
+FONT_PATHS = [
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
+]
+
+
+def render_text_image(text: str):
+    from pathlib import Path
+
+    from PIL import Image, ImageDraw, ImageFont
+
+    font_path = next((p for p in FONT_PATHS if Path(p).exists()), None)
+    font = ImageFont.truetype(font_path, 48) if font_path else ImageFont.load_default(48)
+    image = Image.new("RGB", (1700, 140), "white")
+    ImageDraw.Draw(image).text((20, 30), text, fill="black", font=font)
+    return image
+
+
+def test_ocr_reads_digits_from_image_and_scanned_pdf(tmp_path):
+    import pytest
+
+    from app import ocr
+
+    if not ocr.is_available():
+        pytest.skip("Tesseract не установлен")
+    image = render_text_image("Revenue 28800000")
+    assert "28800000" in ocr.image_to_text(image).replace(" ", "")
+
+    scan = tmp_path / "scan.pdf"
+    image.save(scan)  # PDF из картинки: текстового слоя нет
+    assert "28800000" in ocr.file_to_text(scan).replace(" ", "")
+
+
+def test_scanned_statement_is_parsed_after_upload(client, anna):
+    import pytest
+
+    from app import ocr
+
+    if "rus" not in ocr._languages():
+        pytest.skip("Не установлен русский язык Tesseract")
+    app_id = new_app(client, anna, "7812345678", name="ООО «Север»")
+    buffer = io.BytesIO()
+    render_text_image("Выручка за 2025 год: 28 800 000 руб.").save(buffer, format="PNG")
+    buffer.seek(0)
+    uploaded = client.post(
+        f"/api/applications/{app_id}/documents",
+        headers=anna,
+        data={"type": "STATEMENT"},
+        files={"file": ("scan.png", buffer, "image/png")},
+    )
+    assert uploaded.status_code == 201 and uploaded.json()["parsed_data"]["revenue"] == 28_800_000
+
+
+def test_migrations_match_models(tmp_path):
+    """Миграции создают ровно ту схему, что описана в моделях, и откатываются без ошибок."""
+    from alembic import command
+    from alembic.autogenerate import compare_metadata
+    from alembic.config import Config
+    from alembic.runtime.migration import MigrationContext
+    from sqlalchemy import create_engine
+
+    from app import config
+    from app.db import Base
+
+    url = f"sqlite:///{tmp_path}/migrations.db"
+    old_url, config.DATABASE_URL = config.DATABASE_URL, url
+    try:
+        alembic_config = Config(str(__import__("pathlib").Path(config.__file__).resolve().parents[1] / "alembic.ini"))
+        command.upgrade(alembic_config, "head")
+        engine = create_engine(url)
+        with engine.connect() as connection:
+            assert compare_metadata(MigrationContext.configure(connection), Base.metadata) == []
+        engine.dispose()
+        command.downgrade(alembic_config, "base")
+    finally:
+        config.DATABASE_URL = old_url

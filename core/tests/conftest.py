@@ -3,7 +3,7 @@ import tempfile
 
 _tmp = tempfile.mkdtemp()
 os.environ.update(
-    DATABASE_URL=f"sqlite:///{_tmp}/test.db",
+    DATABASE_URL=os.getenv("TEST_DATABASE_URL", f"sqlite:///{_tmp}/test.db"),
     MOCK_SERVICE_URL="inprocess",
     UPLOAD_DIR=f"{_tmp}/uploads",
     FRONTEND_DIR="/nonexistent",
@@ -11,8 +11,9 @@ os.environ.update(
 )
 
 import pytest
-from app.main import app
 from fastapi.testclient import TestClient
+
+from app.main import app
 
 
 @pytest.fixture(scope="session")

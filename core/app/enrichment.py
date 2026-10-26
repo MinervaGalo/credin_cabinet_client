@@ -16,6 +16,7 @@ def _client():
         if _inproc is None:
             sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "mock"))
             from fastapi.testclient import TestClient
+
             from main import app as mock_app
 
             _inproc = TestClient(mock_app)
