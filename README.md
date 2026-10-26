@@ -28,11 +28,23 @@ Backend и API для кабинета кредитования малого и 
 |---|---|
 | [architecture.md](docs/architecture.md) | сервисы, диаграммы, статусы заявки |
 | [scoring.md](docs/scoring.md) | правила скоринга и решения, ИИ |
+| [data-model.md](docs/data-model.md) | таблицы базы и связи между ними |
 | [api.md](docs/api.md) | список методов и формат ошибок |
+| [openapi.json](docs/openapi.json) | описание API в формате OpenAPI, то же отдаёт Swagger |
 
 ## Быстрый старт
 
-Нужны Docker и Docker Compose.
+### Требования к окружению
+
+| Что | Требование |
+|---|---|
+| Docker | Docker Engine или Docker Desktop 24 и новее с Docker Compose v2 (команда `docker compose`) |
+| Ресурсы | 2 ядра, 4 ГБ оперативной памяти, около 3 ГБ на диске для образов |
+| Порты | 8000 (кабинет и API) и 8001 (мок-сервис), при профиле `ai` ещё 11434 |
+| Сеть | Нужна при первой сборке (образы и пакеты). Дальше работает без интернета, шрифт Inter при отсутствии сети заменяется системным |
+| Запуск без Docker | Python 3.12 и Tesseract, по желанию |
+
+Все версии Python-библиотек зафиксированы в `core/requirements.txt` и `mock/requirements.txt`, базовые образы заданы тегами в Dockerfile и `docker-compose.yml` (необязательный образ `ollama` из профиля `ai` идёт с тегом `latest`), поэтому сборка воспроизводима.
 
 ```bash
 docker compose up --build

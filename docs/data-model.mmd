@@ -1,0 +1,91 @@
+erDiagram
+    companies {
+        INTEGER id PK
+        VARCHAR inn UK
+        VARCHAR ogrn
+        VARCHAR name
+        VARCHAR industry_code
+        VARCHAR registration_date
+        JSON financial_metrics
+        DATETIME created_at
+    }
+    credit_products {
+        INTEGER id PK
+        VARCHAR name UK
+        TEXT description
+        VARCHAR purpose
+        FLOAT base_rate
+        INTEGER min_sum
+        INTEGER max_sum
+        INTEGER min_term
+        INTEGER max_term
+        JSON risk_rules
+    }
+    users {
+        INTEGER id PK
+        VARCHAR email UK
+        VARCHAR password_hash
+        VARCHAR full_name
+        VARCHAR role
+        INTEGER company_id FK
+    }
+    applications {
+        INTEGER id PK
+        VARCHAR number UK
+        INTEGER user_id FK
+        INTEGER company_id FK
+        INTEGER product_id FK
+        INTEGER requested_amount
+        INTEGER term_months
+        VARCHAR purpose
+        VARCHAR status
+        VARCHAR decision
+        VARCHAR decision_by
+        TEXT decision_reason
+        INTEGER approved_amount
+        FLOAT approved_rate
+        DATETIME created_at
+        DATETIME updated_at
+    }
+    application_state_history {
+        INTEGER id PK
+        INTEGER application_id FK
+        VARCHAR from_status
+        VARCHAR to_status
+        VARCHAR actor
+        TEXT comment
+        DATETIME timestamp
+    }
+    documents {
+        INTEGER id PK
+        INTEGER application_id FK
+        VARCHAR type
+        VARCHAR filename
+        VARCHAR file_path
+        JSON parsed_data_json
+        DATETIME uploaded_at
+    }
+    enrichment_data {
+        INTEGER id PK
+        INTEGER application_id FK
+        VARCHAR source
+        JSON payload_json
+        DATETIME fetched_at
+    }
+    scoring_results {
+        INTEGER id PK
+        INTEGER application_id FK
+        INTEGER risk_score
+        VARCHAR risk_level
+        JSON factors_json
+        TEXT summary
+        DATETIME created_at
+    }
+    companies |o--o{ users : "company_id"
+    users ||--o{ applications : "user_id"
+    companies |o--o{ applications : "company_id"
+    credit_products |o--o{ applications : "product_id"
+    applications ||--o{ application_state_history : "application_id"
+    applications ||--o{ documents : "application_id"
+    applications ||--o{ enrichment_data : "application_id"
+    applications ||--o{ scoring_results : "application_id"

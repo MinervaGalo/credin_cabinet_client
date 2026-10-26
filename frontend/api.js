@@ -504,11 +504,16 @@ pages['bank-review.html'] = async () => {
         )
         .join('')}</ul>`;
     const hint = $('.form-hint', left);
-    hist.children.length && hint.before(...hist.children);
+    if (hist.children.length) hint ? hint.before(...hist.children) : left.append(...hist.children);
 
     const act = a.available_actions,
         canDecide = act.manual_decide || act.override_decision;
-    const desc = $('.decision-description', right);
+    let desc = $('.decision-description', right);
+    if (!desc) {
+        desc = document.createElement('p');
+        desc.className = 'muted decision-description';
+        $('.decision-actions', right).before(desc);
+    }
     desc.textContent =
         a.status === 'DOCUMENTS_REQUESTED'
             ? 'Ждём документы от клиента: «' + (a.documents_request_comment || '') + '»'
