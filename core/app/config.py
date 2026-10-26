@@ -13,6 +13,8 @@ SEED_ON_START = os.getenv("SEED_ON_START", "1") == "1"
 
 SECRET_KEY = os.getenv("SECRET_KEY", "demo-secret-change-me")
 TOKEN_TTL_HOURS = 12
+PASSWORD_HASH_ROUNDS = 120_000
+MIN_PASSWORD_LENGTH = 8
 
 # Тестовые ИНН из макета не проходят контрольную сумму, поэтому по умолчанию это предупреждение.
 VALIDATE_INN_CHECKSUM = False
@@ -56,6 +58,10 @@ LEVEL_MEDIUM_FROM = 450
 AUTO_COUNTER_MIN_SCORE = 550
 COUNTER_AMOUNT_FACTOR = 0.8
 COUNTER_RATE_ADD = 1.5
+
+# Языки Tesseract через "+". Нужные языковые пакеты должны быть установлены в системе.
+OCR_LANGUAGES = os.getenv("OCR_LANGUAGES", "rus+eng")
+OCR_MAX_PAGES = 5
 
 OLLAMA_URL = os.getenv("OLLAMA_URL", "")  # пустое значение отключает LLM, работают правила
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "qwen2.5:1.5b")

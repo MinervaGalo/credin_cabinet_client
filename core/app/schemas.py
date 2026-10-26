@@ -1,9 +1,19 @@
 from pydantic import BaseModel, Field
 
+from . import config
+
 
 class LoginIn(BaseModel):
     email: str
     password: str
+
+
+class RegisterIn(BaseModel):
+    email: str = Field(pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+    password: str = Field(min_length=config.MIN_PASSWORD_LENGTH)
+    full_name: str = Field(min_length=2)
+    inn: str | None = None
+    company_name: str | None = None
 
 
 class ApplicationIn(BaseModel):

@@ -5,13 +5,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from .. import ai, enrichment
-from ..crud import get_product
+from ..crud import get_product, upsert_company
 from ..db import get_db
 from ..deps import current_user
 from ..errors import AppError
 from ..models import Company, CreditProduct, User
-from ..schemas import AssistantIn, LoginIn
-from ..security import create_token, verify_password
+from ..schemas import AssistantIn, LoginIn, RegisterIn
+from ..security import create_token, hash_password, verify_password
 
 router = APIRouter(prefix="/api")
 
@@ -37,6 +37,30 @@ def login(body: LoginIn, db: Session = Depends(get_db)):
         raise AppError(
             "Неверный email или пароль", 401, "bad_credentials", "Проверьте раскладку клавиатуры и Caps Lock"
         )
+    return {"token": create_token(user.id, user.role), "role": user.role, "full_name": user.full_name}
+
+
+@router.post("/auth/register", status_code=201, tags=["auth"], summary="Регистрация клиента. Возвращает Bearer-токен")
+def register(body: RegisterIn, db: Session = Depends(get_db)):
+    email = body.email.strip().lower()
+    if db.scalar(select(User).where(User.email == email)):
+        raise AppError(
+            "Пользователь с таким email уже зарегистрирован",
+            409,
+            "email_taken",
+            "Войдите в кабинет или укажите другой адрес",
+            [{"field": "email", "message": "Этот email уже занят"}],
+        )
+    company = upsert_company(db, body.inn, body.company_name)
+    user = User(
+        email=email,
+        password_hash=hash_password(body.password),
+        full_name=body.full_name.strip(),
+        role="client",
+        company_id=company.id if company else None,
+    )
+    db.add(user)
+    db.commit()
     return {"token": create_token(user.id, user.role), "role": user.role, "full_name": user.full_name}
 
 

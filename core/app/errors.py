@@ -29,6 +29,7 @@ _FIELD_NAMES = {
     "purpose": "Цель финансирования",
     "email": "Email",
     "password": "Пароль",
+    "full_name": "Имя",
     "comment": "Комментарий",
     "reason": "Причина",
 }
@@ -45,6 +46,8 @@ def _humanize(err: dict) -> dict:
         msg = f"В поле «{name}» нужно указать число, например 3000000"
     elif kind.startswith("string_too_short"):
         msg = f"Поле «{name}» заполнено слишком коротко"
+    elif kind == "string_pattern_mismatch":
+        msg = f"В поле «{name}» укажите значение в нужном формате, например name@example.com"
     elif kind == "json_invalid":
         msg = "Не удалось прочитать данные формы. Обновите страницу и попробуйте ещё раз"
     else:
