@@ -1,0 +1,78 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: credit
+      POSTGRES_PASSWORD: credit
+      POSTGRES_DB: credit
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U credit"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  mock:
+    build: ./mock
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8001/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  core: &core
+    build:
+      context: .
+      dockerfile: core/Dockerfile
+    environment: &env
+      DATABASE_URL: postgresql+psycopg://credit:credit@db:5432/credit
+      REDIS_URL: redis://redis:6379/0
+      MOCK_SERVICE_URL: http://mock:8001
+      USE_CELERY: "1"
+      OLLAMA_URL: ${OLLAMA_URL:-}
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:1.5b}
+      SECRET_KEY: ${SECRET_KEY:-demo-secret-change-me}
+    volumes:
+      - uploads:/srv/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mock:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  worker:
+    <<: *core
+    command: celery -A app.tasks.celery_app worker -Q credit --loglevel=INFO
+    ports: []
+    depends_on:
+      core:
+        condition: service_started
+
+  # Локальная LLM, запускается только с профилем: docker compose --profile ai up --build
+  ollama:
+    profiles: ["ai"]
+    image: ollama/ollama:latest
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  pgdata:
+  uploads:
+  ollama:
