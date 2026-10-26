@@ -10,7 +10,7 @@ from pypdf import PdfReader
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .. import ai, config
+from .. import ai, config, ocr
 from .. import statemachine as fsm
 from ..crud import (
     all_products,
@@ -158,10 +158,14 @@ def history(app_id: int, user: User = Depends(client_user), db: Session = Depend
 def _extract_text(path: str) -> str:
     file = Path(path)
     suffix = file.suffix.lower()
-    if suffix == ".pdf":
-        return "\n".join((page.extract_text() or "") for page in PdfReader(str(file)).pages)
     if suffix == ".txt":
         return file.read_text(encoding="utf-8", errors="ignore")
+    if suffix == ".pdf":
+        text = "\n".join((page.extract_text() or "") for page in PdfReader(str(file)).pages)
+        if text.strip():
+            return text
+    if suffix == ".pdf" or suffix in ocr.IMAGE_SUFFIXES:
+        return ocr.file_to_text(file)  # скан или фото: текстового слоя нет
     return ""
 
 
@@ -265,7 +269,15 @@ def parse(doc_id: int, user: User = Depends(current_user), db: Session = Depends
     doc, app = _find_document(db, doc_id, user)
     if not doc.file_path:
         raise AppError("В демонстрационном документе нет файла, разбирать нечего", 422, "demo_file")
-    data = _parse_document(doc, app)
+    try:
+        data = _parse_document(doc, app)
+    except ocr.OcrUnavailable:
+        raise AppError(
+            "Распознавание сканов сейчас недоступно",
+            503,
+            "ocr_unavailable",
+            "Загрузите PDF с текстовым слоем или TXT либо обратитесь в поддержку",
+        )
     db.commit()
     return {"document_id": doc.id, "parsed_data": data, "engine": "ollama" if config.OLLAMA_URL else "rules"}
 

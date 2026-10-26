@@ -1,5 +1,8 @@
 # Контекст сборки - корень репозитория: образу нужны и core/, и frontend/
 FROM python:3.12-slim
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-rus tesseract-ocr-eng \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /srv/core
 COPY core/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
