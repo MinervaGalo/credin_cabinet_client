@@ -56,4 +56,58 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     });
+    
+    const companySelect = document.getElementById("companySelect");
+    const companyName = document.getElementById("companyName");
+    const companyMenu = document.getElementById("companyMenu");
+
+    if (companySelect && companyName && companyMenu) {
+        companySelect.addEventListener("click", () => {
+            const isExpanded =
+                companySelect.getAttribute("aria-expanded") === "true";
+
+            companySelect.setAttribute("aria-expanded", String(!isExpanded));
+            companyMenu.hidden = isExpanded;
+        });
+
+        companyMenu.querySelectorAll("[data-company]").forEach((option) => {
+            option.addEventListener("click", () => {
+                const selectedCompany = option.dataset.company;
+
+                companyName.textContent = selectedCompany;
+
+                companyMenu
+                    .querySelectorAll("[data-company]")
+                    .forEach((item) => {
+                        const isActive = item === option;
+
+                        item.classList.toggle("active", isActive);
+
+                        if (isActive) {
+                            item.setAttribute("aria-current", "true");
+                        } else {
+                            item.removeAttribute("aria-current");
+                        }
+                    });
+
+                companyMenu.hidden = true;
+                companySelect.setAttribute("aria-expanded", "false");
+            });
+        });
+
+        document.addEventListener("click", (event) => {
+            if (!event.target.closest(".company-switcher")) {
+                companyMenu.hidden = true;
+                companySelect.setAttribute("aria-expanded", "false");
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                companyMenu.hidden = true;
+                companySelect.setAttribute("aria-expanded", "false");
+            }
+        });
+    }
+
 });
