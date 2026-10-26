@@ -22,11 +22,11 @@ sequenceDiagram
     W->>M: GET /mock/fns/{inn}, /mock/bki/{inn}
     M-->>W: данные ЕГРЮЛ/ФНС и кредитная история
     W->>DB: EnrichmentData, Company.financial_metrics
-    W->>DB: → SCORING, ScoringResult (балл + факторы + AI-резюме)
+    W->>DB: → SCORING, ScoringResult
     alt LOW риск
         W->>DB: → DECISION_MADE (APPROVED)
-    else MEDIUM, балл ≥ 550
-        W->>DB: → DECISION_MADE (COUNTER_OFFER: −20% сумма, +1.5 п.п.)
+    else MEDIUM, балл ≥ 550 (сумма -20%, ставка +1,5 п.п.)
+        W->>DB: → DECISION_MADE (COUNTER_OFFER)
     else MEDIUM, пограничный
         W->>DB: → MANUAL_REVIEW
         A->>API: approve / counter-offer / reject / request-documents
