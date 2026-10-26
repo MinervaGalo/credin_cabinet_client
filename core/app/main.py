@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from . import config, errors
+from .db import run_migrations
 from .routers import applications, bank, public
 from .seed import seed
 
@@ -17,6 +18,7 @@ logging.getLogger("transitions").setLevel(logging.WARNING)
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     Path(config.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
+    run_migrations()
     if config.SEED_ON_START:
         seed()
     yield

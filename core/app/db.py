@@ -1,3 +1,7 @@
+from pathlib import Path
+
+from alembic import command
+from alembic.config import Config
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -22,3 +26,9 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def run_migrations() -> None:
+    """Приводит схему базы к последней версии. Повторный вызов безопасен."""
+    core_dir = Path(__file__).resolve().parents[1]
+    command.upgrade(Config(str(core_dir / "alembic.ini")), "head")

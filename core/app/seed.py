@@ -10,7 +10,7 @@ from sqlalchemy import select
 
 from . import statemachine as fsm
 from .crud import create_application, upsert_company
-from .db import Base, SessionLocal, engine
+from .db import SessionLocal, run_migrations
 from .models import Application, CreditProduct, Document, User
 from .security import hash_password
 from .services import run_pipeline
@@ -72,7 +72,6 @@ DEMO_DOCS = {
 
 
 def seed(run_pipelines: bool = True) -> None:
-    Base.metadata.create_all(engine)
     db = SessionLocal()
     try:
         if db.scalar(select(User).limit(1)):
@@ -134,4 +133,5 @@ def seed(run_pipelines: bool = True) -> None:
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
+    run_migrations()
     seed()
