@@ -1,0 +1,12 @@
+flowchart LR
+    client([Клиент МСБ]) --> front
+    analyst([Аналитик банка]) --> front
+    subgraph docker[docker compose]
+        front[Статический фронт<br/>HTML + api.js] --> core
+        core[Core API · FastAPI<br/>клиентский API · кабинет банка<br/>State Machine · Scoring · Decision · AI] --> db[(PostgreSQL)]
+        core -- задачи --> redis[(Redis)]
+        redis --> worker[Celery worker<br/>кредитный конвейер]
+        worker --> db
+        worker -- HTTP --> mock[Mock-service<br/>/mock/fns · /mock/bki]
+        core -. опционально .-> ollama[Ollama<br/>локальная LLM]
+    end

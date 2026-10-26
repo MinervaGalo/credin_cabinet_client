@@ -1,0 +1,37 @@
+sequenceDiagram
+    autonumber
+    actor C as Клиент (МСБ)
+    participant UI as Фронт (статика)
+    participant API as Core API (FastAPI)
+    participant DB as PostgreSQL
+    participant Q as Redis / Celery
+    participant W as Worker (конвейер)
+    participant M as Mock-service (ФНС, БКИ)
+    actor A as Аналитик банка
+
+    C->>UI: заполняет мастер заявки
+    UI->>API: PATCH /applications/{id} (черновик + валидация на лету)
+    API->>DB: сохраняет черновик
+    C->>UI: «Отправить заявку»
+    UI->>API: POST /applications/{id}/submit
+    API->>DB: DRAFT → SUBMITTED (+ запись в аудит)
+    API->>Q: pipeline.run(id)
+    API-->>UI: 200, статус «На проверке»
+    Q->>W: задача
+    W->>DB: SUBMITTED → DATA_ENRICHMENT
+    W->>M: GET /mock/fns/{inn}, /mock/bki/{inn}
+    M-->>W: данные ЕГРЮЛ/ФНС и кредитная история
+    W->>DB: EnrichmentData, Company.financial_metrics
+    W->>DB: → SCORING, ScoringResult (балл + факторы + AI-резюме)
+    alt LOW риск
+        W->>DB: → DECISION_MADE (APPROVED)
+    else MEDIUM, балл ≥ 550
+        W->>DB: → DECISION_MADE (COUNTER_OFFER: −20% сумма, +1.5 п.п.)
+    else MEDIUM, пограничный
+        W->>DB: → MANUAL_REVIEW
+        A->>API: approve / counter-offer / reject / request-documents
+        API->>DB: решение + аудит (кто, когда, комментарий)
+    else HIGH риск
+        W->>DB: → DECISION_MADE (REJECTED)
+    end
+    C->>API: accept → AWAITING_SIGNING, sign → DISBURSED

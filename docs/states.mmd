@@ -1,0 +1,17 @@
+stateDiagram-v2
+    [*] --> DRAFT
+    DRAFT --> SUBMITTED: submit (валидация)
+    SUBMITTED --> DATA_ENRICHMENT: ФНС и БКИ
+    DATA_ENRICHMENT --> SCORING
+    DATA_ENRICHMENT --> MANUAL_REVIEW: сервисы недоступны
+    SCORING --> DECISION_MADE: Decision Engine
+    SCORING --> MANUAL_REVIEW: пограничный риск
+    MANUAL_REVIEW --> DOCUMENTS_REQUESTED: запрос документов
+    DOCUMENTS_REQUESTED --> MANUAL_REVIEW: клиент загрузил файл
+    MANUAL_REVIEW --> DECISION_MADE: решение аналитика
+    DECISION_MADE --> DECISION_MADE: пересмотр
+    DECISION_MADE --> SUBMITTED: пересчёт скоринга
+    MANUAL_REVIEW --> SUBMITTED: пересчёт скоринга
+    DECISION_MADE --> AWAITING_SIGNING: клиент принял
+    AWAITING_SIGNING --> DISBURSED: подписание
+    DISBURSED --> [*]
