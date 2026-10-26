@@ -95,14 +95,13 @@ def _fit_to_product(product, amount: int | None, term: int | None) -> tuple[int 
     """Подгоняет сумму и срок под ограничения продукта и объясняет каждое изменение."""
     notes = []
     if amount and amount > product.max_sum:
-        notes.append(
-            f"Максимум по продукту «{product.name}» - {product.max_sum:,} ₽, сумма уменьшена".replace(",", " ")
-        )
+        max_sum = f"{product.max_sum:,}".replace(",", " ")
+        notes.append(f"Максимум по продукту «{product.name}» - {max_sum} ₽, сумма уменьшена.")
         amount = product.max_sum
     if term and not product.min_term <= term <= product.max_term:
         fixed = min(max(term, product.min_term), product.max_term)
         notes.append(
-            f"Срок по продукту «{product.name}» - от {product.min_term} до {product.max_term} мес., подставили {fixed}"
+            f"Срок по продукту «{product.name}» - от {product.min_term} до {product.max_term} мес., подставлен срок {fixed} мес."
         )
         term = fixed
     return amount, term, notes
@@ -128,12 +127,13 @@ def assistant(message: str, products: list) -> dict:
         "purpose": purpose,
     }
     if product:
-        parts = [f"Рекомендую «{product.name}» ({product.base_rate}% годовых)"]
+        rate = str(product.base_rate).replace(".", ",")
+        parts = [f"Рекомендую «{product.name}» ({rate}% годовых)"]
         if amount:
             parts.append(f"сумма {amount:,} ₽".replace(",", " "))
         if term:
-            parts.append(f"срок {term} мес.")
-        reply = ", ".join(parts) + ". Я заполнил форму заявки - проверьте и отправьте. " + " ".join(notes)
+            parts.append(f"срок {term} мес")
+        reply = ", ".join(parts) + ". Я заполнил форму заявки, проверьте и отправьте. " + " ".join(notes)
     else:
         reply = "Расскажите, на что нужны деньги (оборудование, закупка товара, развитие) и какая сумма - я подберу продукт."
     return {
