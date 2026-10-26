@@ -364,7 +364,7 @@ a {
     left:10px;
     top:12px;
     height:2px;
-    width:68%;
+    width:var(--progress, 68%);   /* BACKEND: ширину красной линии задаёт api.js, по умолчанию как было (68%) */
     background:var(--red);
     max-width:calc(100% - 20px);
 }
@@ -1027,3 +1027,23 @@ tbody tr:last-child td {
     font-size:12px;
     line-height:1.7;
 }
+
+/* ===== BACKEND: стили элементов, которые добавляет api.js (существующие стили выше не менялись) ===== */
+.field-error { color:#b72c3a; font-size:11px; line-height:1.5; margin:6px 0 0; }
+.field-warn { color:#9a6a00; font-size:11px; line-height:1.5; margin:6px 0 0; }
+.alert { border-radius:8px; padding:11px 13px; font-size:12px; line-height:1.6; margin:14px 0; }
+.alert-error { background:#fcebed; color:#b72c3a; }
+.alert-ok { background:#e9f8f1; color:#16855f; }
+.alert-info { background:#fff5dc; color:#7b5900; }
+.ai-box { border:1px solid var(--line); border-radius:10px; padding:14px; background:#fbfcfe; margin:14px 0; }
+.ai-box p { margin:6px 0 0; font-size:12px; line-height:1.7; color:#334158; }
+.ai-box .form-control { width:100%; }
+.pts { margin-left:auto; font-weight:700; }
+.pts-pos { color:var(--green); }
+.pts-neg { color:#b72c3a; }
+.check-list li .when { color:var(--muted); font-size:10px; margin-left:auto; padding-left:12px; white-space:nowrap; }
+.doc-actions { margin-left:auto; display:flex; gap:12px; align-items:center; }
+.hidden { display:none !important; }
+.panel-note { font-size:12px; line-height:1.7; color:var(--muted); }
+.upload-row { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; align-items:center; }
+.upload-row select { padding:9px 10px; border:1px solid var(--line); border-radius:7px; font-size:11px; background:#fff; }
