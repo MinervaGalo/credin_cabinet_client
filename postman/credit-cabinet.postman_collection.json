@@ -819,6 +819,46 @@
       "name": "Дополнительно",
       "item": [
         {
+          "name": "Регистрация нового клиента",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"client{{$timestamp}}@example.com\",\n  \"password\": \"strong-pass-1\",\n  \"full_name\": \"Ирина Новикова\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Статус 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Выдан токен', () => pm.expect(pm.response.json().token).to.be.a('string'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
           "name": "Мои заявки",
           "request": {
             "method": "GET",

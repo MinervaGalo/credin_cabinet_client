@@ -18,7 +18,27 @@
 | httpx | HTTP-клиент (вызовы мок-сервиса, Ollama) | BSD-3-Clause |
 | python-multipart | загрузка файлов | Apache-2.0 |
 | pypdf | извлечение текста из PDF | BSD-3-Clause |
+| pytesseract | вызов Tesseract из Python | Apache-2.0 |
+| Pillow | работа с изображениями | MIT-CMU (HPND) |
+| pypdfium2 | отрисовка страниц PDF для OCR (PDFium) | Apache-2.0 или BSD-3-Clause |
+| python-jose | JWT-токены | MIT |
+| cryptography | криптография для python-jose | Apache-2.0 или BSD-3-Clause |
+| passlib | хеширование паролей | BSD |
+| Alembic | миграции базы данных | MIT |
+
+## Инструменты разработки
+
+| Пакет | Назначение | Лицензия |
+|---|---|---|
 | pytest | тесты | MIT |
+| ruff | линтер | MIT |
+| black | форматирование кода | MIT |
+
+## Системные программы
+
+| Программа | Назначение | Лицензия |
+|---|---|---|
+| Tesseract OCR и языковые данные `rus`, `eng` (пакеты Debian `tesseract-ocr*`, ставятся в образ `core`) | распознавание текста на сканах | Apache-2.0 |
 
 ## Инфраструктура (Docker-образы)
 
