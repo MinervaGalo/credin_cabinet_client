@@ -32,6 +32,7 @@ const esc = (s) =>
         /[&<>"']/g,
         (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
     );
+const ratePct = (r) => String(r).replace('.', ','); // 14.1 -> «14,1»
 const money = (n) => (n == null ? '—' : Number(n).toLocaleString('ru-RU') + ' ₽');
 const date = (iso) => (iso ? new Date(iso).toLocaleDateString('ru-RU') : '—');
 const dateTime = (iso) =>
@@ -309,9 +310,9 @@ function nextText(a) {
         );
     if (a.decision === 'REJECTED') return 'К сожалению, банк отказал: ' + (a.decision_reason || '');
     if (a.decision === 'COUNTER_OFFER')
-        return `Банк предлагает ${money(a.approved_amount)} под ${a.approved_rate}% годовых. Откройте заявку, чтобы принять или отклонить.`;
+        return `Банк предлагает ${money(a.approved_amount)} под ${ratePct(a.approved_rate)}% годовых. Откройте заявку, чтобы принять или отклонить.`;
     if (a.decision === 'APPROVED' && a.status === 'DECISION_MADE')
-        return `Заявка одобрена: ${money(a.approved_amount)} под ${a.approved_rate}% годовых. Примите предложение в карточке заявки.`;
+        return `Заявка одобрена: ${money(a.approved_amount)} под ${ratePct(a.approved_rate)}% годовых. Примите предложение в карточке заявки.`;
     if (a.status === 'AWAITING_SIGNING') return 'Ожидает подписания договора - сделайте это в карточке заявки.';
     if (a.status === 'DISBURSED') return 'Договор подписан, средства выданы.';
     if (a.status === 'DRAFT') return 'Это черновик - допишите данные и отправьте заявку в банк.';
@@ -512,7 +513,7 @@ pages['bank-review.html'] = async () => {
         a.status === 'DOCUMENTS_REQUESTED'
             ? 'Ждём документы от клиента: «' + (a.documents_request_comment || '') + '»'
             : a.decision
-              ? `Решение: ${{ APPROVED: 'одобрено', REJECTED: 'отказ', COUNTER_OFFER: 'встречное предложение' }[a.decision]}${a.approved_amount ? ', ' + money(a.approved_amount) + ' под ' + a.approved_rate + '%' : ''}. ${a.decision_reason || ''}`
+              ? `Решение: ${{ APPROVED: 'одобрено', REJECTED: 'отказ', COUNTER_OFFER: 'встречное предложение' }[a.decision]}${a.approved_amount ? ', ' + money(a.approved_amount) + ' под ' + ratePct(a.approved_rate) + '%' : ''}. ${a.decision_reason || ''}`
               : canDecide
                 ? 'Заявка на ручной проверке. Примите решение или запросите документы.'
                 : 'Идёт автоматическая проверка, обновите страницу через минуту.';
